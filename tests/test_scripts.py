@@ -33,13 +33,55 @@ class BubbleLintTests(unittest.TestCase):
                     "voice_mode": "append",
                     "tts": {
                         "voice": "default",
-                        "text": "外头今天风挺大的。下午出门记得顺手带件外套呀。",
+                        "text": "外头今天风挺大的。下午出门记得带件外套呀。",
                     },
                 },
             ]
         }
         issues = bubble_lint.lint_payload(payload)
         self.assertEqual(issues, [])
+
+    def test_plain_reply_surface_preserves_coupled_lines_and_blank_line_beats(self) -> None:
+        coupled = bubble_lint.parse_payload("北门丰巢07号柜\n取件码 663920", surface="plain")
+        self.assertEqual(len(coupled["messages"]), 1)
+        self.assertEqual(bubble_lint.lint_payload(coupled), [])
+
+        two_beats = bubble_lint.parse_payload("错误率0.02%没动，p99降到38ms\n\n连接池也稳，直接全量吧", surface="plain")
+        self.assertEqual(len(two_beats["messages"]), 2)
+        self.assertEqual(bubble_lint.lint_payload(two_beats), [])
+
+    def test_plain_reply_catches_leaked_json_and_bubble_labels(self) -> None:
+        leaked_json = bubble_lint.parse_payload('{"messages": [{"text": "点啊"}]}', surface="plain")
+        codes_json = {item["code"] for item in bubble_lint.lint_payload(leaked_json)}
+        self.assertIn("plain.meta_leak", codes_json)
+
+        leaked_label = bubble_lint.parse_payload("Bubble 1: Staging is green\n\nBubble 2: Ship it", surface="plain")
+        codes_label = {item["code"] for item in bubble_lint.lint_payload(leaked_label)}
+        self.assertIn("plain.meta_leak", codes_label)
+
+    def test_catches_trailing_periods_on_short_beats_and_codes(self) -> None:
+        code_period = {"messages": [{"text": "北门丰巢07号柜，取件码663920。"}]}
+        codes_1 = {item["code"] for item in bubble_lint.lint_payload(code_period)}
+        self.assertIn("style.trailing_period", codes_1)
+
+        all_periods = {
+            "messages": [
+                {"text": "已确认全量完成，健康检查全部通过。"},
+                {"text": "连接池有异常我会直接通知你。"},
+            ]
+        }
+        codes_2 = {item["code"] for item in bubble_lint.lint_payload(all_periods)}
+        self.assertIn("style.trailing_period", codes_2)
+
+    def test_catches_system_error_and_placeholder_leaks(self) -> None:
+        payload = {
+            "messages": [
+                {"text": "语音没发出去，这台机器的语音合成插件没配好，{{user}}先看文字"}
+            ]
+        }
+        codes = {item["code"] for item in bubble_lint.lint_payload(payload)}
+        self.assertIn("style.system_error_leak", codes)
+        self.assertIn("style.placeholder_leak", codes)
 
     def test_catches_batch_root_tts_duplication(self) -> None:
         payload = {

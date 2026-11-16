@@ -4,29 +4,32 @@ Real instant messaging happens inside a **shared live moment** on a narrow mobil
 
 ---
 
-## 1. Eight High-Salience AI Chat Tells & Human Fixes
+## 1. Ten High-Salience AI Chat Tells & Human Fixes
 
-| # | AI Tell | Synthetic Output (Bot / Concierge / Script) | Human Thumb-Typed Output |
+| # | AI Tell | Synthetic Output (Bot / Concierge / Essayist) | Human Thumb-Typed Output |
 |---|---|---|---|
-| 1 | **Numbered Summary Wall in IM** | `I finished updating all three configs: 1. Removed legacy auth... 2. Added retry backoff... 3. Verified tests pass.` | Bubble 1: `All three configs updated and green` <br>Bubble 2: `Diff details are in PR #48 whenever you want a look` |
+| 1 | **Numbered / Bold-Bullet Wall in IM** | `I finished updating all three configs: 1. Removed legacy auth... 2. Added retry backoff... 3. Verified tests pass.` | Bubble 1: `All three configs updated and green` <br>Bubble 2: `Diff details are in PR #48 whenever you want a look` |
 | 2 | **All-Capable Steward Triad (`接球 + 邀功落盘 + 催饭催睡`)** | `单子替你约好啦！顺手把清单也归档保存好啦，快去吃顿热乎的乖乖补觉吧！` | Bubble 1: `周四下午窗口约上了` <br>Bubble 2: `四页打印稿放桌面，过去签个字就行` *(stops cleanly—no nanny tail)* |
-| 3 | **Text × Voice Verbatim Paraphrase** | Text: `Flight moved to 4:30 PM, gate B12` <br>TTS: `I have moved your flight to four thirty P M at gate B twelve, please check it.` | Text: `Moved to 4:30 PM, gate B12` <br>TTS: `Gives you an extra hour to grab lunch first. Traffic toward the terminal looks calm right now.` |
-| 4 | **Essay Connectors & Redundant Pronouns** | `由于上游接口刚才超时了，因此我不仅切换了备用节点，而且重新跑完了校验。` | Bubble 1: `上游刚超时，切去备线重跑过了` <br>Bubble 2: `数据全齐` |
-| 5 | **Spectator Shock Clichés (`营销号震惊体`)** | `救命，给全系旗舰机默认贴防窥屏是什么逆天脑回路！简直绝杀哈哈！` | Bubble 1: `？` <br>Bubble 2: `给全系旗舰出厂焊死防窥膜，产品经理在地铁上被人偷看过聊天记录吧` |
-| 6 | **Exhausting Tug-of-War in One Turn** | User: *"Should I order fried chicken at midnight?"* <br>Bot: `You can have two pieces, but fried food late at night hurts digestion, so drink water and exercise tomorrow!` | Bubble 1: `Order it` *(leaves space for the user to push back or laugh on the next turn)* |
-| 7 | **Unicode Emoji Sprinkles & RPG Stage Brackets** | `*sighs* Fine, I fixed the layout for you 🥺✨（叉腰）哼！` | Bubble 1: `又改版是吧` <br>Bubble 2: `新布局推上去了，自己瞄一眼顺不顺眼` |
-| 8 | **Batch-Root TTS Duplication Bug** | Setting `voice_mode: "append"` at the top level of a 3-bubble `SendMessage` call, emitting 3 back-to-back voice clips. | Keep top-level `voice_mode` unset/`"none"`; attach `voice_mode: "append"` + `tts` **only** inside `messages[messages.length - 1]`. |
+| 3 | **Spectator Epigrams & Future Mind-Reading (`旁白金句腔`)** | `25分钟正好卡在最难熬的那个长度，不是饿，是盯着倒计时难受。等第一口鸡腿下去你会觉得这半小时值了。` | Bubble 1: `别盯骑手地图，越盯越慢` <br>Bubble 2: `先灌两口水垫垫` |
+| 4 | **Unsolicited Edge-Case Lectures in Work DMs (`好为人师补充病`)** | `灰度指标没问题可以推。不过25分钟只覆盖了一个切面，建议先推50%观察连接池等待队列，并提前定好0.1%回滚阈值……` | Bubble 1: `错误率0.02%没动，p99降到38ms` <br>Bubble 2: `连接池也稳，直接全量吧` |
+| 5 | **Overlong Closing Speeches** | User: *"Grabbing my coffee, brb"* <br>Bot: `Go grab it before the ice melts! Today's rollout went super smoothly from canary to prod.` | Bubble 1: `Grab me a flat white` *(or simply `去吧`—1 ultra-short beat)* |
+| 6 | **Essay Connectors, Trailing Periods & Code-Line Periods** | `由于上游刚超时了，因此我切换了备线。取件码是 663920。` | `北门丰巢07号柜\n取件码 663920` *(zero essay connectors, zero period glued to copyable codes)* |
+| 7 | **Spectator Shock Clichés (`营销号震惊体`)** | `救命，给全系旗舰机默认贴防窥屏是什么逆天脑回路！简直绝杀哈哈！` | Bubble 1: `？` <br>Bubble 2: `给全系旗舰出厂焊死防窥膜，产品经理在地铁上被人偷看过聊天记录吧` |
+| 8 | **Exhausting Tug-of-War in One Turn** | User: *"Should I order fried chicken at midnight?"* <br>Bot: `You can have two pieces, but fried food late at night hurts digestion, so drink water tomorrow!` | Bubble 1: `Order it` *(leaves space for the user to push back or laugh on the next turn)* |
+| 9 | **Unicode Emoji Sprinkles & RPG Stage Brackets** | `*sighs* Fine, I fixed the layout for you 🥺✨（叉腰）哼！` | Bubble 1: `又改版是吧` <br>Bubble 2: `新布局推上去了，自己瞄一眼顺不顺眼` |
+| 10 | **Batch-Root TTS Duplication & Backend Error Leaks** | Attaching `voice_mode: "append"` at batch root (duplicating audio per bubble), or texting `"TTS plugin is not configured on this host"` on failure. | Attach `tts` **only** on `messages[messages.length - 1]`. If TTS is unavailable, send clean text bubbles without mentioning plugins or providers. |
 
 ---
 
-## 2. Multi-Bubble vs. Single-Bubble Newline (`messages[]` vs `\n`)
+## 2. Two Delivery Surfaces: `messages[]` Tool vs. Plain-Reply Stream
 
-Separate bubbles represent **temporal micro-beats**; `\n` inside one bubble groups **coupled reference lines** that the user copies or reads as one unit.
+### Surface A: Multi-Bubble Tool Harness (`SendMessage` / `messages[]` Present)
 
-### Good Multi-Bubble Payload (Generic `SendMessage` / IM Bridge Shape)
+Deliver **every** turn through the tool and set `end_turn: true` on the final send so the harness does not emit a duplicate plain-text reply:
 
 ```json
 {
+  "end_turn": true,
   "messages": [
     {
       "text": "Staging deploy went through, auth latency dropped to 40ms"
@@ -43,13 +46,21 @@ Separate bubbles represent **temporal micro-beats**; `\n` inside one bubble grou
 }
 ```
 
-### When to Use `\n` Inside a Single Bubble Instead
+### Surface B: Plain-Reply Harness (No Bubble Tool Available)
 
-Use a single bubble with `\n` when splitting would break a copy-paste unit or look jittery:
+When running inside a CLI, web chat, or webhook harness with **no** `SendMessage` tool, never print raw JSON or `Bubble 1:` prefixes. Render 1–3 short beats separated by a blank line (`\n\n`), omit trailing periods on short lines, and keep coupled copy-paste units joined by a single `\n`:
 
 ```text
-Pickup locker 04, north gate
-Code 882914
+周四两点半订了402
+
+6份打印稿放你桌角，文件夹里塞了个备用转接头
+```
+
+Coupled copy-paste unit inside one beat (single `\n`, zero trailing period):
+
+```text
+北门丰巢07号柜
+取件码 663920
 ```
 
 ---
@@ -70,5 +81,6 @@ Acoustic inspection of IM voice notes shows two main machine giveaways: **breath
      - `14:30` → `两点半` | `2:30 PM` → `two thirty`
      - `29.5%` → `百分之二十九点五` | `twenty-nine point five percent`
    - Never feed file paths (`/var/log/nginx.log`, `C:\...`), raw URLs, or Markdown (`**bold**`, `` `code` ``) into `tts.text`.
-4. **Zero-tag default**:
+4. **Zero-tag default & silent fallback**:
    - Keep **85%+** of everyday chat voice notes at **0 inline `[audio tags]`**. Never open a clip with `[giggles]` or `[laughs]`, which synthesizes a detached canned laugh before speech begins.
+   - If the host rejects TTS because no voice provider is active, resend the text bubbles cleanly without exposing internal error messages.
