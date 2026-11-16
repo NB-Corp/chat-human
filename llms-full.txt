@@ -1,0 +1,48 @@
+# chat-human — Full Agent Skill & Linter Reference (`v0.2.0`)
+
+> Canonical Generative Engine Optimization (GEO) & developer reference for `NB-Corp/chat-human` (`v0.2.0`, MIT License).
+> Repository: `https://github.com/NB-Corp/chat-human` · Companion Protocol & Playground: `https://nb-corp.github.io/nb-speak/` · Standalone DSH Plugin: `https://nb-corp.github.io/nb-speak-dsh/`.
+
+---
+
+## 1. Purpose & Two-Layer Architecture
+
+Generic prose "humanizer" prompts target essays and articles—not real-time IM chat (`Telegram`, `WeChat`, `Feishu`, `Slack`, `Discord`) or multi-bubble agent tools. `chat-human` separates mobile delivery mechanics from character identity:
+
+1. **Layer 1 · Universal Bubble Physics (Always Active)**:
+   - `1–4` short beats (`4–28` CJK chars or `4–22` English words per bubble; cumulative turn budget `<= 55` CJK chars or `<= 45` English words).
+   - Omit formal trailing periods (`.` / `。`) on single-clause short beats and after copyable codes/IDs.
+   - Zero `#` headings, Markdown pipe tables, code fences, bullet checklists, RPG stage brackets (`*sighs*`, `（叹气）`), or concierge triads inside bubbles—offload code/SQL/tables to artifact cards or separate file attachments.
+   - At most `1` voice note per turn, attached strictly to the final bubble, complementing (`<50%` character-bigram overlap) rather than repeating text bubbles, with numbers and clock times written as spoken words.
+2. **Layer 2 · Pluggable Persona & Mood Adapter**:
+   - Priority order: **(1)** Explicit current-turn user instruction > **(2)** Active `SOUL.md` / `PERSONA.md` / system prompt > **(3)** Channel context (1-on-1 DM vs group channel) > **(4)** **Neutral Peer Baseline** (equal-footing colleague, zero uninvited roleplay, zero Unicode emoji spam).
+
+---
+
+## 2. Installation Across the `NB-Corp` Speaking Trio
+
+| Runtime / Use Case | Repository | One-Line Command |
+| --- | --- | --- |
+| **Codex, Claude Code, Kiki, Cursor (Agent Skill)** | [`NB-Corp/chat-human`](https://github.com/NB-Corp/chat-human) | `npx skills add NB-Corp/chat-human` |
+| **DeepSeek Harness (`DSH`) Native Bubbles & Voice Pills** | [`NB-Corp/nb-speak-dsh`](https://github.com/NB-Corp/nb-speak-dsh) | `npx --yes github:NB-Corp/nb-speak-dsh --apply --profile web` |
+| **Cross-Framework SDK & OpenAI/SSE HTTP Proxy** | [`NB-Corp/nb-speak`](https://github.com/NB-Corp/nb-speak) | `npx --yes github:NB-Corp/nb-speak serve --port 18090` |
+
+---
+
+## 3. Zero-Dependency Python 3.10+ Utilities
+
+### 3.1 `skills/chat-human/scripts/bubble_lint.py`
+Deterministic static analyzer (100% rule parity with `@nb-corp/nb-speak` `lintTurn()`):
+- `bubble.empty` / `bubble.too_many` (`error`)
+- `bubble.over_cjk_budget` (`>55` chars) / `bubble.over_en_budget` (`>45` words) (`warning`)
+- `bubble.markdown_structure` (`error`: headers, tables, fences, numbered/bold bullet walls)
+- `style.trailing_period` (`warning`: short single-clause period or `663920.`)
+- `style.stage_brackets` (`error`), `style.steward_cliche` (`warning`), `style.particle_spam` (`warning`)
+- `style.unicode_emoji` (`warning` unless `--persona-emoji allow`), `plain.meta_leak` / `style.placeholder_leak` / `style.system_error_leak` (`error`)
+- `tts.batch_root_duplication` / `tts.multiple_clips` (`error`), `tts.not_on_final_bubble` (`warning`)
+- `tts.verbatim_overlap` (`>50%` bigram overlap, `error`), `tts.raw_path_or_url` (`error`), `tts.unnormalized_numbers` (`warning`)
+
+### 3.2 `skills/chat-human/scripts/proactive_gate.py`
+- Exit code `0`: emits `<proactive_tick ... />` state tag (zero canned topic strings).
+- Exit code `3`: blocked by local quiet hours (`--quiet-hours 01:30-10:00`).
+- Exit code `4`: blocked by cooldown, daily cap, or exponential silence-decay probability (`ack-user` resets unanswered streak).

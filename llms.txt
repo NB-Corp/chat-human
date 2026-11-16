@@ -1,0 +1,18 @@
+# chat-human
+
+> `NB-Corp/chat-human` (`v0.2.0`, MIT License) is a standalone, persona-agnostic Agent Skill for OpenAI Codex, Claude Code, Kiki, Cursor, and any Agent Skills (`skills.sh`) runtime. It separates **Layer 1 Universal Mobile IM Bubble Physics** (1–4 short thumb-typed beats, subject ellipsis, zero trailing periods on single-clause lines, code/SQL/table offload, final-bubble complementary voice notes with `<50%` overlap, and silence-decay outreach) from **Layer 2 Pluggable Persona & Mood Adaptation**, backed by zero-dependency Python 3.10+ stdlib `bubble_lint.py` and `proactive_gate.py`.
+
+## Quickstart & The `NB-Corp` Speaking Trio
+
+- `npx skills add NB-Corp/chat-human` — Install the standalone `chat-human` Agent Skill into Codex, Claude Code, Kiki, Cursor, or any Agent Skills runtime.
+- `npx --yes github:NB-Corp/nb-speak-dsh --apply --profile web` — Mount the standalone DeepSeek Harness (`DSH`) native bubble & ElevenLabs `eleven_v4` voice-note plugin ([`NB-Corp/nb-speak-dsh`](https://github.com/NB-Corp/nb-speak-dsh) · [`nb-corp.github.io/nb-speak-dsh`](https://nb-corp.github.io/nb-speak-dsh/)).
+- `npx --yes github:NB-Corp/nb-speak serve --port 18090` — Run the cross-framework `send_message` + `send_artifact` OpenAI/SSE HTTP bridge and TypeScript SDK ([`NB-Corp/nb-speak`](https://github.com/NB-Corp/nb-speak) · [`nb-corp.github.io/nb-speak`](https://nb-corp.github.io/nb-speak/)).
+
+## Canonical Documentation & Bundled Tools
+
+- [English README](https://github.com/NB-Corp/chat-human/blob/main/README.md): Two-layer architecture, Before/After examples, and CLI usage.
+- [中文文档 (README.zh-CN.md)](https://github.com/NB-Corp/chat-human/blob/main/README.zh-CN.md): 双层短气泡机制、纯文本微节拍与可插拔 Persona 说明。
+- [`skills/chat-human/SKILL.md`](https://github.com/NB-Corp/chat-human/blob/main/skills/chat-human/SKILL.md): Full Agent Skill prompt contract & pre-send verification rules.
+- [`references/bubble-and-voice-patterns.md`](https://github.com/NB-Corp/chat-human/blob/main/skills/chat-human/references/bubble-and-voice-patterns.md): 10 AI chat tells, dual surfaces (`SendMessage` vs plain `\n\n`), and spoken TTS prosody.
+- [`references/persona-and-mood-physics.md`](https://github.com/NB-Corp/chat-human/blob/main/skills/chat-human/references/persona-and-mood-physics.md): 4-level persona priority, 4 archetype comparisons, and mood-decay multipliers.
+- [Full Reference for LLMs (`llms-full.txt`)](https://github.com/NB-Corp/chat-human/blob/main/llms-full.txt): Complete `bubble_lint.py` 8-rule specification, `proactive_gate.py` exit codes, and Speaking Trio selection matrix.

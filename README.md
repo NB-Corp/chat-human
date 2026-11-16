@@ -2,7 +2,7 @@
 
 **Thumb-typed IM bubble mechanics, plain-reply beat pacing, complementary voice notes, and pluggable persona adaptation for AI agents.**
 
-**English** · [简体中文](README.zh-CN.md) · [Skill (`skills/chat-human/SKILL.md`)](skills/chat-human/SKILL.md) · [Full Protocol & Bridge (`NB-Corp/nb-speak`)](https://github.com/NB-Corp/nb-speak) · [Live Playground](https://nb-corp.github.io/nb-speak/)
+**English** · [简体中文](README.zh-CN.md) · [Skill (`skills/chat-human/SKILL.md`)](skills/chat-human/SKILL.md) · [DSH Bubble Plugin (`NB-Corp/nb-speak-dsh`)](https://github.com/NB-Corp/nb-speak-dsh) · [Protocol & Bridge (`NB-Corp/nb-speak`)](https://github.com/NB-Corp/nb-speak) · [Live Playground](https://nb-corp.github.io/nb-speak/) · [llms.txt](llms.txt)
 
 ---
 
@@ -57,8 +57,14 @@ Install with the Agent Skills CLI (`skills.sh`):
 
 ```bash
 npx skills add NB-Corp/chat-human
-# Or install from the unified nb-speak protocol + bridge + DSH plugin monorepo:
+# Or install from the unified nb-speak protocol + bridge monorepo:
 npx skills add NB-Corp/nb-speak
+```
+
+Running **DeepSeek Harness (`DSH`)**? Mount the standalone zero-clone native bubble & ElevenLabs `eleven_v4` voice-note plugin ([`NB-Corp/nb-speak-dsh`](https://github.com/NB-Corp/nb-speak-dsh) · [Live DSH Showcase](https://nb-corp.github.io/nb-speak-dsh/)):
+
+```bash
+npx --yes github:NB-Corp/nb-speak-dsh --apply --profile web
 ```
 
 Or copy/symlink [`skills/chat-human`](skills/chat-human) directly into your agent runtime's skill directory:

@@ -2,7 +2,7 @@
 
 **面向 AI Agent 的手机短气泡对话机制、纯文本微节拍排版、互补语音条与可插拔 Persona 语气适配技能。**
 
-[English](README.md) · **简体中文** · [技能正文 (`skills/chat-human/SKILL.md`)](skills/chat-human/SKILL.md) · [完整双工具协议与桥接 (`NB-Corp/nb-speak`)](https://github.com/NB-Corp/nb-speak) · [在线同屏工作台](https://nb-corp.github.io/nb-speak/zh/)
+[English](README.md) · **简体中文** · [技能正文 (`skills/chat-human/SKILL.md`)](skills/chat-human/SKILL.md) · [DSH 原生气泡插件 (`NB-Corp/nb-speak-dsh`)](https://github.com/NB-Corp/nb-speak-dsh) · [双工具协议与桥接 (`NB-Corp/nb-speak`)](https://github.com/NB-Corp/nb-speak) · [在线同屏工作台](https://nb-corp.github.io/nb-speak/zh/) · [llms.txt](llms.txt)
 
 ---
 
@@ -57,8 +57,14 @@
 
 ```bash
 npx skills add NB-Corp/chat-human
-# 或从统一集成双工具协议、OpenAI/SSE 桥接网关与 DSH 插件的主仓安装：
+# 或从统一集成双工具协议与 OpenAI/SSE 桥接网关的主仓安装：
 npx skills add NB-Corp/nb-speak
+```
+
+正在使用 **DeepSeek Harness (`DSH`)**？可直接一行命令零克隆挂载独立原生真气泡与贴麦语音插件（[`NB-Corp/nb-speak-dsh`](https://github.com/NB-Corp/nb-speak-dsh) · [DSH 在线展台](https://nb-corp.github.io/nb-speak-dsh/zh/)）：
+
+```bash
+npx --yes github:NB-Corp/nb-speak-dsh --apply --profile web
 ```
 
 或将 [`skills/chat-human`](skills/chat-human) 直接复制 / 软链到对应 Agent 运行时的技能目录：
