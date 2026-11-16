@@ -37,7 +37,7 @@ RAW_DECIMAL_OR_TIME_RE = re.compile(r"(?<!\d)(?:\d+\.\d+|\d{1,2}:\d{2})(?!\.\d)"
 LA_ENDING_CLAUSE_RE = re.compile(r"啦(?=(?:[\s\U0001F300-\U0001FAFF\u2600-\u27BF！!？?~～。，,]|$))")
 
 PLAIN_META_LEAK_RE = re.compile(
-    r'(?:\{\s*"messages"\s*:|(?:^|\n)\s*(?:Bubble|Beat|气泡)\s*[1-9]\s*[:：]|```json)',
+    r'(?:\{\s*"(?:messages|bubbles)"\s*:|(?:^|\n)\s*(?:Bubble|Beat|气泡)\s*[1-9]\s*[:：]|```json)',
     re.IGNORECASE,
 )
 PLACEHOLDER_LEAK_RE = re.compile(r"\{\{\s*(?:user|char)\s*\}\}", re.IGNORECASE)
@@ -186,7 +186,7 @@ def parse_payload(
 def lint_payload(
     payload: Dict[str, Any],
     *,
-    max_bubbles: int = 3,
+    max_bubbles: int | None = None,
     max_cjk_chars: int = 55,
     max_en_words: int = 45,
     persona_emoji: str = "deny",
@@ -199,12 +199,31 @@ def lint_payload(
             {
                 "code": "plain.meta_leak",
                 "level": "error",
-                "message": "Plain-reply output leaked raw `{\"messages\": ...}` JSON or `Bubble 1:` labels.",
+                "message": "Plain-reply output leaked raw `{\"messages\": ...}` / `{\"bubbles\": ...}` JSON or `Bubble 1:` labels.",
             }
         )
 
+    raw_bubbles = payload.get("bubbles")
     raw_messages = payload.get("messages")
-    if raw_messages is None:
+    used_bubbles_protocol = raw_bubbles is not None and raw_messages is None
+    effective_max_bubbles = max_bubbles if max_bubbles is not None else (4 if used_bubbles_protocol else 3)
+
+    if used_bubbles_protocol:
+        if not isinstance(raw_bubbles, list):
+            return [{"code": "schema.invalid_bubbles", "level": "error", "message": "`bubbles` must be an array of strings."}]
+        messages = [b if isinstance(b, dict) else {"text": str(b)} for b in raw_bubbles]
+        voice_note = payload.get("voice_note")
+        if isinstance(voice_note, dict) and str(voice_note.get("text") or "").strip():
+            if messages:
+                messages[-1] = {
+                    **messages[-1],
+                    "voice_mode": "append",
+                    "tts": {"text": str(voice_note.get("text") or "").strip(), "emotion": voice_note.get("emotion")},
+                }
+            else:
+                messages = [{"text": "", "voice_mode": "only", "tts": {"text": str(voice_note.get("text") or "").strip()}}]
+        used_messages_array = False
+    elif raw_messages is None:
         single_text = payload.get("text")
         messages = [
             {
@@ -229,12 +248,12 @@ def lint_payload(
         issues.append({"code": "bubble.empty", "level": "error", "message": "No chat bubbles found in payload."})
         return issues
 
-    if len(messages) > max_bubbles:
+    if len(messages) > effective_max_bubbles:
         issues.append(
             {
                 "code": "bubble.too_many",
                 "level": "error",
-                "message": f"Found {len(messages)} bubbles (max {max_bubbles}); consolidate or offload long detail.",
+                "message": f"Found {len(messages)} bubbles (max {effective_max_bubbles}); consolidate or offload long detail.",
             }
         )
 
@@ -454,7 +473,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         help="Delivery surface mode: auto (default), json (SendMessage payload), or plain (ordinary reply stream)",
     )
     parser.add_argument("--tts-text", type=str, default=None, help="Optional TTS script when linting plain-text bubbles")
-    parser.add_argument("--max-bubbles", type=int, default=3, help="Maximum bubbles per turn (default: 3)")
+    parser.add_argument("--max-bubbles", type=int, default=None, help="Maximum bubbles per turn (default: 4 for bubbles[], 3 for messages[])")
     parser.add_argument("--max-cjk-chars", type=int, default=55, help="Maximum total CJK characters (default: 55)")
     parser.add_argument("--max-en-words", type=int, default=45, help="Maximum total English words (default: 45)")
     parser.add_argument("--persona-emoji", choices=("deny", "allow"), default="deny", help="Whether active persona permits Unicode emoji")

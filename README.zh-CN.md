@@ -2,7 +2,7 @@
 
 **面向 AI Agent 的手机短气泡对话机制、纯文本微节拍排版、互补语音条与可插拔 Persona 语气适配技能。**
 
-[English](README.md) · **简体中文** · [技能正文 (`skills/chat-human/SKILL.md`)](skills/chat-human/SKILL.md)
+[English](README.md) · **简体中文** · [技能正文 (`skills/chat-human/SKILL.md`)](skills/chat-human/SKILL.md) · [完整双工具协议与桥接 (`NB-Corp/nb-speak`)](https://github.com/NB-Corp/nb-speak) · [在线同屏工作台](https://nb-corp.github.io/nb-speak/zh/)
 
 ---
 
@@ -56,7 +56,9 @@
 通过 Agent Skills CLI（`skills.sh`）安装：
 
 ```bash
-npx skills add <owner>/chat-human
+npx skills add NB-Corp/chat-human
+# 或从统一集成双工具协议、OpenAI/SSE 桥接网关与 DSH 插件的主仓安装：
+npx skills add NB-Corp/nb-speak
 ```
 
 或将 [`skills/chat-human`](skills/chat-human) 直接复制 / 软链到对应 Agent 运行时的技能目录：

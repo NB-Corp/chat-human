@@ -1,6 +1,6 @@
 ---
 name: chat-human
-description: "Write, deliver, lint, or diagnose natural thumb-typed IM / DM chat messages (WeChat/微信, Telegram, Feishu/飞书, Slack, Discord, QQ, WhatsApp, iMessage, SendMessage messages[], or plain-reply chat streams) and complementary TTS voice notes. Use when drafting, replying in, or simulating live 1-on-1 or character/persona chats (短气泡/回两句人话/去管家腔, zero *sighs* or essay walls), pairing text bubbles with voice notes, running bubble_lint.py, or configuring proactive_gate.py outreach decay—always load this skill before replying so its Layer 1 bubble/plain-reply delivery contract and TTS rules apply. Not for longform article/fiction de-AI (speak-human), dense deal/news briefings (mobile-im-brief), or README/product docs (reader-first-writing)."
+description: "Write, deliver, lint, or diagnose natural thumb-typed IM / DM chat messages (WeChat/微信, Telegram, Feishu/飞书, Slack, Discord, QQ, WhatsApp, iMessage, send_message bubbles[], SendMessage messages[], or plain-reply chat streams) and complementary TTS voice notes. Use when drafting, replying in, or simulating live 1-on-1 or character/persona chats (短气泡/回两句人话/去管家腔, zero *sighs* or essay walls), pairing text bubbles with voice notes, offloading code/tables via send_artifact, running bubble_lint.py, or configuring proactive_gate.py outreach decay—always load this skill before replying so its Layer 1 bubble/plain-reply delivery contract and TTS rules apply. Not for longform article/fiction de-AI (speak-human), dense deal/news briefings (mobile-im-brief), or README/product docs (reader-first-writing)."
 license: MIT
 metadata:
   short-description: Persona-adaptive thumb-typed IM bubbles and voice notes
@@ -15,9 +15,9 @@ This skill separates **Layer 1 (Universal Bubble Physics)** from **Layer 2 (Pers
 
 ## Layer 1: Universal Bubble Physics (Always Active)
 
-1. **Match the host delivery surface (`SendMessage` tool vs. plain-reply stream)**
-   - **Bubble-tool surface (`SendMessage` / `messages[]` available)**: Deliver **every** chat turn—including 2-word casual acks—through the tool (`end_turn: true` on the final send, with zero duplicate plain-text reply afterward, since plain text does not reach external IM bindings).
-   - **Plain-reply surface (no bubble tool in harness)**: Apply the **exact same length budget, ellipsis, and period omission** directly in your ordinary reply. Separate 1–3 short beats with a blank line (`\n\n`), keep tightly coupled copy-paste lines (e.g., locker number + pickup code) joined by a single `\n`, and **never** output raw `{"messages": ...}` JSON, `Bubble 1:` labels, or revert to formal prose paragraphs just because `SendMessage` is absent.
+1. **Match the host delivery surface (`send_message` / `SendMessage` tool vs. plain-reply stream)**
+   - **Bubble-tool surface (`send_message({ bubbles, voice_note })` or `SendMessage({ messages })` available)**: Deliver **every** chat turn—including 2-word casual acks—through the tool (`end_turn: true` on the final send, with zero duplicate plain-text reply afterward, since plain text does not reach external IM bindings). When `send_artifact` is available, push multi-line code, diffs, SQL, or Markdown tables there and reference them in 1–2 short bubbles.
+   - **Plain-reply surface (no bubble tool in harness)**: Apply the **exact same length budget, ellipsis, and period omission** directly in your ordinary reply. Separate 1–3 short beats with a blank line (`\n\n`), keep tightly coupled copy-paste lines (e.g., locker number + pickup code) joined by a single `\n`, and **never** output raw `{"messages": ...}` / `{"bubbles": ...}` JSON, `Bubble 1:` labels, or revert to formal prose paragraphs just because a bubble tool is absent.
 
 2. **Thumb-typed length center of gravity & rhythm variation**
    - Default to **1–2 short beats** (~4–28 CJK chars or ~4–22 English words total) for everyday banter, quick status checks, and direct opinions.
@@ -34,8 +34,8 @@ This skill separates **Layer 1 (Universal Bubble Physics)** from **Layer 2 (Pers
    - Never run `[enthusiastic ack] + [itemized labor report] + [unsolicited eat/sleep nanny tail]`, and ban subordinate boilerplate (`向你汇报`, `请检阅`, `顺手替你`, `随时告诉我`, `for your review`, `let me know if you need anything`). Mention food or sleep only when it is genuinely late night or the user brought up hunger/fatigue.
    - Default to **0 Unicode emoji** unless the current turn or active persona explicitly opts in; send plain text when real image stickers are unavailable. Zero RPG stage brackets (`*sighs*`, `（叹气）`, `（笑）`), zero forced `哼` / typo tics, and keep sentence-final `啦` / `~` / `!` below 20% of beats.
 
-5. **Text × Voice Note (`TTS`) complementarity & silent fallback** *(when voice is enabled)*
-   - Attach at most **1 voice note per turn**, placed **only on the final item** of `messages[]` (never at the batch root).
+5. **Text × Voice Note (`voice_note` / `TTS`) complementarity & silent fallback** *(when voice is enabled)*
+   - Attach at most **1 voice note per turn**, placed **only on the final bubble** (`messages[last].tts` or `send_message.voice_note`, never duplicated across multiple bubbles).
    - **Divide duties—never read the text bubble aloud**: Text carries exact numbers, IDs, filenames, and URLs; `tts.text` (~4–10s, 15–40 CJK chars or 12–30 words) adds an ear-side reaction or warm/dry aside. Break every 2 short clauses with `.` / `?` / `。` / `？`, spell numbers/times in spoken words (`十九块九`, `两点半`, `four forty-five`), and keep 85%+ of clips at **0 bracketed audio tags**.
    - **Graceful TTS fallback**: If voice synthesis fails or no TTS provider is configured, resend text beats cleanly without `tts` and **never** leak backend/plugin diagnostics (`TTS plugin not configured`, `media provider missing`) into chat text. Mention voice unavailability casually (`这会儿发不了语音，直接打字说` / `Can't send audio right now, texting instead`) only when the user explicitly asked for a voice note; otherwise say nothing about voice.
 

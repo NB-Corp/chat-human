@@ -24,6 +24,21 @@ proactive_gate = _load_module("proactive_gate", SCRIPTS_DIR / "proactive_gate.py
 
 
 class BubbleLintTests(unittest.TestCase):
+    def test_nb_speak_send_message_bubbles_and_voice_note_passes(self) -> None:
+        payload = {
+            "bubbles": [
+                "Staging deploy went through, auth latency dropped to 40ms",
+                "Flip prod tonight or hold till morning",
+            ],
+            "voice_note": {
+                "text": "Dashboard stayed quiet for ten minutes straight. Totally fine waiting till morning if you already closed your laptop.",
+                "emotion": "calm",
+            },
+            "end_turn": true_bool(),
+        }
+        issues = bubble_lint.lint_payload(payload)
+        self.assertEqual(issues, [])
+
     def test_clean_multi_bubble_with_complementary_tts_passes(self) -> None:
         payload = {
             "messages": [
@@ -51,7 +66,7 @@ class BubbleLintTests(unittest.TestCase):
         self.assertEqual(bubble_lint.lint_payload(two_beats), [])
 
     def test_plain_reply_catches_leaked_json_and_bubble_labels(self) -> None:
-        leaked_json = bubble_lint.parse_payload('{"messages": [{"text": "点啊"}]}', surface="plain")
+        leaked_json = bubble_lint.parse_payload('{"bubbles": ["点啊"]}', surface="plain")
         codes_json = {item["code"] for item in bubble_lint.lint_payload(leaked_json)}
         self.assertIn("plain.meta_leak", codes_json)
 
@@ -60,14 +75,14 @@ class BubbleLintTests(unittest.TestCase):
         self.assertIn("plain.meta_leak", codes_label)
 
     def test_catches_trailing_periods_on_short_beats_and_codes(self) -> None:
-        code_period = {"messages": [{"text": "北门丰巢07号柜，取件码663920。"}]}
+        code_period = {"bubbles": ["北门丰巢07号柜，取件码663920。"]}
         codes_1 = {item["code"] for item in bubble_lint.lint_payload(code_period)}
         self.assertIn("style.trailing_period", codes_1)
 
         all_periods = {
-            "messages": [
-                {"text": "已确认全量完成，健康检查全部通过。"},
-                {"text": "连接池有异常我会直接通知你。"},
+            "bubbles": [
+                "已确认全量完成，健康检查全部通过。",
+                "连接池有异常我会直接通知你。",
             ]
         }
         codes_2 = {item["code"] for item in bubble_lint.lint_payload(all_periods)}
@@ -97,16 +112,13 @@ class BubbleLintTests(unittest.TestCase):
 
     def test_catches_verbatim_tts_paraphrase_and_raw_tokens(self) -> None:
         payload = {
-            "messages": [
-                {"text": "Staging deploy went through, auth latency dropped to 40ms"},
-                {
-                    "text": "Check the report",
-                    "voice_mode": "append",
-                    "tts": {
-                        "text": "Staging deploy went through, auth latency dropped to 40.5ms at https://example.com/log"
-                    },
-                },
-            ]
+            "bubbles": [
+                "Staging deploy went through, auth latency dropped to 40ms",
+                "Check the report",
+            ],
+            "voice_note": {
+                "text": "Staging deploy went through, auth latency dropped to 40.5ms at https://example.com/log"
+            },
         }
         codes = {item["code"] for item in bubble_lint.lint_payload(payload)}
         self.assertIn("tts.verbatim_overlap", codes)
@@ -115,9 +127,9 @@ class BubbleLintTests(unittest.TestCase):
 
     def test_catches_markdown_stage_brackets_steward_cliche_and_emoji_policy(self) -> None:
         payload = {
-            "messages": [
-                {"text": "*sighs* 向你汇报，我已经顺手替你改好啦 ✨\n1. 第一项\n2. 第二项"},
-                {"text": "清单也整理好啦！"},
+            "bubbles": [
+                "*sighs* 向你汇报，我已经顺手替你改好啦 ✨\n1. 第一项\n2. 第二项",
+                "清单也整理好啦！",
             ]
         }
         codes = {item["code"] for item in bubble_lint.lint_payload(payload, persona_emoji="deny")}
@@ -129,6 +141,10 @@ class BubbleLintTests(unittest.TestCase):
 
         allowed_codes = {item["code"] for item in bubble_lint.lint_payload(payload, persona_emoji="allow")}
         self.assertNotIn("style.unicode_emoji", allowed_codes)
+
+
+def true_bool() -> bool:
+    return True
 
 
 class ProactiveGateTests(unittest.TestCase):
@@ -143,13 +159,11 @@ class ProactiveGateTests(unittest.TestCase):
             self.assertEqual(state["daily_count"], 1)
             self.assertEqual(state["unanswered_streak"], 1)
 
-            # Immediate check without --force hits cooldown (exit code 4)
             rc_cooldown = proactive_gate.main(
                 ["--state-file", str(state_file), "check", "--ignore-quiet", "--prob", "1.0", "--no-stdin"]
             )
             self.assertEqual(rc_cooldown, 4)
 
-            # User reply resets unanswered_streak to 0
             rc_ack = proactive_gate.main(["--state-file", str(state_file), "ack-user"])
             self.assertEqual(rc_ack, 0)
             state_after = json.loads(state_file.read_text(encoding="utf-8"))

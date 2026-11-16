@@ -2,7 +2,7 @@
 
 **Thumb-typed IM bubble mechanics, plain-reply beat pacing, complementary voice notes, and pluggable persona adaptation for AI agents.**
 
-**English** · [简体中文](README.zh-CN.md) · [Skill (`skills/chat-human/SKILL.md`)](skills/chat-human/SKILL.md)
+**English** · [简体中文](README.zh-CN.md) · [Skill (`skills/chat-human/SKILL.md`)](skills/chat-human/SKILL.md) · [Full Protocol & Bridge (`NB-Corp/nb-speak`)](https://github.com/NB-Corp/nb-speak) · [Live Playground](https://nb-corp.github.io/nb-speak/)
 
 ---
 
@@ -56,7 +56,9 @@ See [`references/persona-and-mood-physics.md`](skills/chat-human/references/pers
 Install with the Agent Skills CLI (`skills.sh`):
 
 ```bash
-npx skills add <owner>/chat-human
+npx skills add NB-Corp/chat-human
+# Or install from the unified nb-speak protocol + bridge + DSH plugin monorepo:
+npx skills add NB-Corp/nb-speak
 ```
 
 Or copy/symlink [`skills/chat-human`](skills/chat-human) directly into your agent runtime's skill directory:
