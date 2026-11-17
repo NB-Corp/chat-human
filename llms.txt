@@ -1,18 +1,23 @@
 # chat-human
 
-> `NB-Corp/chat-human` (`v0.2.0`, MIT License) is a standalone, persona-agnostic Agent Skill for OpenAI Codex, Claude Code, Kiki, Cursor, and any Agent Skills (`skills.sh`) runtime. It separates **Layer 1 Universal Mobile IM Bubble Physics** (1–4 short thumb-typed beats, subject ellipsis, zero trailing periods on single-clause lines, code/SQL/table offload, strictly opt-in final-bubble voice notes with `<50%` overlap, and silence-decay outreach) from **Layer 2 Pluggable Persona & Mood Adaptation**, backed by zero-dependency Python 3.10+ stdlib `bubble_lint.py` and `proactive_gate.py`.
+> `NB-Corp/chat-human` (`v0.2.0`, MIT License) is a standalone, persona-agnostic Agent Skill for Personal Agents (`OpenClaw`, `AstrBot`, `Claude Code`, `Codex`, `Cursor`, `skills.sh`, `ClawHub`) and mobile IM bots (`Telegram`, `WhatsApp`, `WeChat`, `QQ`, `Feishu/Lark`, `Discord`, `Slack`). While prose humanizers (`humanizer`) edit essays, `chat-human` stops Personal Agents from turning chat windows into 200-word corporate memos and raw `|---|---|` Markdown pipe-table dumps—separating **Layer 1 Universal Mobile IM Bubble Physics** (1–4 short thumb-typed beats, code/SQL/table card offload, zero trailing periods on short lines or pickup codes, pure text by default with strictly opt-in final-bubble voice notes, and silence-decay outreach) from **Layer 2 Pluggable Persona & Mood Adaptation**, backed by zero-dependency Python 3.10+ stdlib `bubble_lint.py` and `proactive_gate.py`.
 
-## Quickstart & The `NB-Corp` Speaking Trio
+## Quickstart Across Personal Agents & Runtimes
 
-- `npx skills add NB-Corp/chat-human` — Install the standalone `chat-human` Agent Skill into Codex, Claude Code, Kiki, Cursor, or any Agent Skills runtime.
-- `npx --yes github:NB-Corp/nb-speak-dsh --apply --profile web` — Mount the standalone DeepSeek Harness (`DSH`) native bubble, artifact card & optional voice-note plugin ([`NB-Corp/nb-speak-dsh`](https://github.com/NB-Corp/nb-speak-dsh) · [`nb-corp.github.io/nb-speak-dsh`](https://nb-corp.github.io/nb-speak-dsh/)).
-- `npx --yes github:NB-Corp/nb-speak serve --port 18090` — Run the cross-framework `send_message` + `send_artifact` OpenAI/SSE HTTP bridge and TypeScript SDK ([`NB-Corp/nb-speak`](https://github.com/NB-Corp/nb-speak) · [`nb-corp.github.io/nb-speak`](https://nb-corp.github.io/nb-speak/)).
+- `npx skills add NB-Corp/chat-human --global --agent '*'` — Install the standalone `chat-human` Agent Skill into Claude Code, OpenAI Codex, Cursor, OpenClaw, Kiki, Gemini CLI, and 70+ Agent Skills (`skills.sh`) runtimes.
+- `npx --yes github:NB-Corp/nb-speak openclaw --apply` — Zero-clone installation of `@nb-corp/nb-speak-openclaw`, the native OpenClaw plugin & deterministic outbound gate fixing Telegram/WhatsApp raw pipe tables (`openclaw#36323`) and 250-word essay regressions.
+- `git clone --depth 1 https://github.com/NB-Corp/astrbot_plugin_nb_speak <AstrBot>/data/plugins/astrbot_plugin_nb_speak` (or paste `https://github.com/NB-Corp/astrbot_plugin_nb_speak` in AstrBot WebUI Plugin Manager) — Install `astrbot_plugin_nb_speak` to fix AstrBot's 150-char `segmented_reply` cliff (`AstrBot#8614`), protect fenced code blocks from regex slicing, and convert pipe tables into QQ/WeChat mobile KV cards.
+- `npx --yes github:NB-Corp/nb-speak serve --port 18090` — Start the zero-dependency OpenAI/SSE HTTP proxy bridge (`@nb-corp/nb-speak`), or mount `@nb-corp/nb-speak-dsh` for DeepSeek Harness (`DSH`).
 
 ## Canonical Documentation & Bundled Tools
 
-- [English README](https://github.com/NB-Corp/chat-human/blob/main/README.md): Two-layer architecture, Before/After examples, and CLI usage.
-- [中文文档 (README.zh-CN.md)](https://github.com/NB-Corp/chat-human/blob/main/README.zh-CN.md): 双层短气泡机制、纯文本微节拍与可插拔 Persona 说明。
+- [English README](https://github.com/NB-Corp/chat-human/blob/main/README.md): Personal Agent positioning, Before/After mobile IM table, two-layer architecture, and CLI usage.
+- [中文文档 (README.zh-CN.md)](https://github.com/NB-Corp/chat-human/blob/main/README.zh-CN.md): 面向 OpenClaw / AstrBot / 微信 / QQ / Telegram 的短气泡物理层与防破功指南。
 - [`skills/chat-human/SKILL.md`](https://github.com/NB-Corp/chat-human/blob/main/skills/chat-human/SKILL.md): Full Agent Skill prompt contract & pre-send verification rules.
-- [`references/bubble-and-voice-patterns.md`](https://github.com/NB-Corp/chat-human/blob/main/skills/chat-human/references/bubble-and-voice-patterns.md): 10 AI chat tells, dual surfaces (`SendMessage` vs plain `\n\n`), and spoken TTS prosody.
+- [`references/bubble-and-voice-patterns.md`](https://github.com/NB-Corp/chat-human/blob/main/skills/chat-human/references/bubble-and-voice-patterns.md): 10 AI chat tells, dual surfaces (`send_message` vs plain `\n\n`), and opt-in spoken TTS prosody.
 - [`references/persona-and-mood-physics.md`](https://github.com/NB-Corp/chat-human/blob/main/skills/chat-human/references/persona-and-mood-physics.md): 4-level persona priority, 4 archetype comparisons, and mood-decay multipliers.
-- [Full Reference for LLMs (`llms-full.txt`)](https://github.com/NB-Corp/chat-human/blob/main/llms-full.txt): Complete `bubble_lint.py` 8-rule specification, `proactive_gate.py` exit codes, and Speaking Trio selection matrix.
+- [Full Reference for LLMs (`llms-full.txt`)](https://github.com/NB-Corp/chat-human/blob/main/llms-full.txt): Complete `bubble_lint.py` 8-rule specification, `proactive_gate.py` exit codes, and PA integration matrix.
+
+## Keywords & Discovery Topics
+
+Personal Agent, OpenClaw plugin, ClawHub skill, AstrBot plugin, Telegram bot humanizer, WhatsApp agent bubbles, WeChat QQ bot segmented reply, Claude Code skill, skills.sh, IM bubble physics, Markdown table formatter, bubble_lint.

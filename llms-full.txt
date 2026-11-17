@@ -1,31 +1,38 @@
 # chat-human — Full Agent Skill & Linter Reference (`v0.2.0`)
 
 > Canonical Generative Engine Optimization (GEO) & developer reference for `NB-Corp/chat-human` (`v0.2.0`, MIT License).
-> Repository: `https://github.com/NB-Corp/chat-human` · Companion Protocol & Playground: `https://nb-corp.github.io/nb-speak/` · Standalone DSH Plugin: `https://nb-corp.github.io/nb-speak-dsh/`.
+> Repository: `https://github.com/NB-Corp/chat-human` · PA Plugins, Protocol & Playground: `https://nb-corp.github.io/nb-speak/`.
 
 ---
 
-## 1. Purpose & Two-Layer Architecture
+## 1. Positioning: Prose Humanizers vs. Personal Agent IM Physics
 
-Generic prose "humanizer" prompts target essays and articles—not real-time IM chat (`Telegram`, `WeChat`, `Feishu`, `Slack`, `Discord`) or multi-bubble agent tools. `chat-human` separates mobile delivery mechanics from character identity:
+Generic prose "humanizer" skills (`humanizer`, `Humanizer-zh`) rewrite essays and blog posts. When developers connect a **Personal Agent** (`OpenClaw`, `AstrBot`, `Claude Code`, `Codex`, custom Telegram/WhatsApp/WeChat/QQ/Slack/Discord bots) to live mobile messaging, prose prompts fail to stop:
+- Raw `|---|---|` Markdown pipe tables wrapping into unreadable pipe soup on narrow phone screens (`openclaw#36323`);
+- 200-word bulleted corporate walls and concierge sign-offs (`"Hope this helps! Let me know if you need anything!"`);
+- Built-in regex splitters refusing to split replies `>150` chars or chopping fenced code blocks into broken fragments (`AstrBot#8614`).
+
+`chat-human` separates mobile delivery mechanics from character identity:
 
 1. **Layer 1 · Universal Bubble Physics (Always Active)**:
    - `1–4` short beats (`4–28` CJK chars or `4–22` English words per bubble; cumulative turn budget `<= 55` CJK chars or `<= 45` English words).
-   - Omit formal trailing periods (`.` / `。`) on single-clause short beats and after copyable codes/IDs.
-   - Zero `#` headings, Markdown pipe tables, code fences, bullet checklists, RPG stage brackets (`*sighs*`, `（叹气）`), or concierge triads inside bubbles—offload code/SQL/tables to artifact cards or separate file attachments.
-   - Pure text bubbles + artifact offload are the default; voice notes (`tts` / `voice_note`) are strictly opt-in (attached only when voice output is enabled in host/plugin config or requested by the user—at most `1` per turn on the final bubble, `<50%` character-bigram overlap, spoken-word numbers).
+   - Omit formal trailing periods (`.` / `。`) on single-clause short beats and after copyable codes/IDs (`663920`).
+   - Zero `#` headings, Markdown pipe tables, code fences, bullet checklists, RPG stage brackets (`*sighs*`, `（叹气）`), or concierge triads inside bubbles—offload code/SQL/tables to artifact cards or dedicated formatted blocks.
+   - Pure text bubbles + artifact offload are the default (`enableVoiceNotes = false`); voice notes (`tts` / `voice_note`) are strictly opt-in (compatible with any generic OpenAI `/v1/audio/speech` endpoint, local TTS, or Web Speech—at most `1` per turn on the final bubble, `<50%` character-bigram overlap, spoken-word numbers, silent fallback on error).
 2. **Layer 2 · Pluggable Persona & Mood Adapter**:
-   - Priority order: **(1)** Explicit current-turn user instruction > **(2)** Active `SOUL.md` / `PERSONA.md` / system prompt > **(3)** Channel context (1-on-1 DM vs group channel) > **(4)** **Neutral Peer Baseline** (equal-footing colleague, zero uninvited roleplay, zero Unicode emoji spam).
+   - Priority order: **(1)** Explicit current-turn user instruction > **(2)** Active `SOUL.md` / `PERSONA.md` / AstrBot or OpenClaw persona > **(3)** Channel context (1-on-1 DM vs group channel) > **(4)** **Neutral Peer Baseline** (equal-footing colleague, zero uninvited roleplay, zero Unicode emoji spam).
 
 ---
 
-## 2. Installation Across the `NB-Corp` Speaking Trio
+## 2. Installation Across Personal Agents & Harnesses
 
-| Runtime / Use Case | Repository | One-Line Command |
+| Runtime / Personal Agent Surface | Package / Path | One-Line Command |
 | --- | --- | --- |
-| **Codex, Claude Code, Kiki, Cursor (Agent Skill)** | [`NB-Corp/chat-human`](https://github.com/NB-Corp/chat-human) | `npx skills add NB-Corp/chat-human` |
-| **DeepSeek Harness (`DSH`) Native Bubbles & Voice Pills** | [`NB-Corp/nb-speak-dsh`](https://github.com/NB-Corp/nb-speak-dsh) | `npx --yes github:NB-Corp/nb-speak-dsh --apply --profile web` |
-| **Cross-Framework SDK & OpenAI/SSE HTTP Proxy** | [`NB-Corp/nb-speak`](https://github.com/NB-Corp/nb-speak) | `npx --yes github:NB-Corp/nb-speak serve --port 18090` |
+| **Claude Code, Codex, Cursor, Kiki (`skills.sh`)** | [`NB-Corp/chat-human`](https://github.com/NB-Corp/chat-human) | `npx skills add NB-Corp/chat-human --global --agent '*'` |
+| **OpenClaw (Telegram / WhatsApp / Discord / Signal)** | `@nb-corp/nb-speak-openclaw` ([`NB-Corp/nb-speak`](https://github.com/NB-Corp/nb-speak)) | `npx --yes github:NB-Corp/nb-speak openclaw --apply` |
+| **AstrBot (QQ / WeChat / Telegram / Feishu)** | [`NB-Corp/astrbot_plugin_nb_speak`](https://github.com/NB-Corp/astrbot_plugin_nb_speak) | `git clone --depth 1 https://github.com/NB-Corp/astrbot_plugin_nb_speak <AstrBot>/data/plugins/astrbot_plugin_nb_speak` |
+| **OpenAI / SSE Bridge & TypeScript SDK** | `@nb-corp/nb-speak` ([`NB-Corp/nb-speak`](https://github.com/NB-Corp/nb-speak)) | `npx --yes github:NB-Corp/nb-speak serve --port 18090` |
+| **DeepSeek Harness (`DSH`) WebUI Client** | [`NB-Corp/nb-speak-dsh`](https://github.com/NB-Corp/nb-speak-dsh) | `npx --yes github:NB-Corp/nb-speak-dsh --apply --profile web` |
 
 ---
 
@@ -35,7 +42,7 @@ Generic prose "humanizer" prompts target essays and articles—not real-time IM 
 Deterministic static analyzer (100% rule parity with `@nb-corp/nb-speak` `lintTurn()`):
 - `bubble.empty` / `bubble.too_many` (`error`)
 - `bubble.over_cjk_budget` (`>55` chars) / `bubble.over_en_budget` (`>45` words) (`warning`)
-- `bubble.markdown_structure` (`error`: headers, tables, fences, numbered/bold bullet walls)
+- `bubble.markdown_structure` (`error`: headers, pipe tables, fences, numbered/bold bullet walls)
 - `style.trailing_period` (`warning`: short single-clause period or `663920.`)
 - `style.stage_brackets` (`error`), `style.steward_cliche` (`warning`), `style.particle_spam` (`warning`)
 - `style.unicode_emoji` (`warning` unless `--persona-emoji allow`), `plain.meta_leak` / `style.placeholder_leak` / `style.system_error_leak` (`error`)
