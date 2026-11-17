@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
+  "name": "chat-human",
+  "owner": {
+    "name": "NB-Corp",
+    "url": "https://github.com/NB-Corp"
+  },
+  "description": "Install chat-human as a Claude Code plugin for natural mobile IM rhythm and zero raw pipe-table walls.",
+  "plugins": [
+    {
+      "name": "chat-human",
+      "source": "./",
+      "description": "Universal mobile IM bubble physics and deterministic bubble_lint gate for Personal Agents.",
+      "version": "0.2.0",
+      "license": "MIT",
+      "keywords": [
+        "im",
+        "chat-human",
+        "agent-skills",
+        "telegram",
+        "whatsapp",
+        "markdown-tables"
+      ]
+    }
+  ]
+}

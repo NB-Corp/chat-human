@@ -27,27 +27,19 @@ npx skills add NB-Corp/chat-human --global --agent claude-code
 npx skills add NB-Corp/chat-human --global --agent codex
 ```
 
-### 2. Mount Native Personal Agent Plugins (OpenClaw & AstrBot)
+### 2. Mount Native Personal Agent & Bot Plugins (`NB-Corp/nb-speak`)
 
-Prompt instructions alone can regress after context compaction. Pair `chat-human` with the deterministic outbound gates in **[`NB-Corp/nb-speak`](https://github.com/NB-Corp/nb-speak)**:
+Prompt instructions alone can regress after context compaction. Pair `chat-human` with the deterministic outbound gates and MCP server in **[`NB-Corp/nb-speak`](https://github.com/NB-Corp/nb-speak)**:
 
-```bash
-# A. OpenClaw (Telegram / WhatsApp / Discord / Signal — zero-clone reversible install into ~/.openclaw)
-npx --yes github:NB-Corp/nb-speak openclaw --apply
-
-# B. AstrBot (QQ / WeChat / Telegram / Feishu — paste https://github.com/NB-Corp/astrbot_plugin_nb_speak in WebUI, or run:)
-git clone --depth 1 https://github.com/NB-Corp/astrbot_plugin_nb_speak <AstrBot>/data/plugins/astrbot_plugin_nb_speak
-```
-
-### 3. OpenAI / SSE Bridge & Additional Harnesses
-
-```bash
-# Drop-in local OpenAI-compatible HTTP/SSE proxy in front of DeepSeek, OpenAI, Claude, or llama-server
-NB_SPEAK_API_KEY="sk-..." npx --yes github:NB-Corp/nb-speak serve --port 18090 --upstream-url https://api.deepseek.com/v1
-
-# DeepSeek Harness (DSH) WebUI client plugin (one of our supported runtimes)
-npx --yes github:NB-Corp/nb-speak-dsh --apply --profile web
-```
+| Ecosystem / Client | Package / Repo | One-Line Setup |
+| --- | --- | --- |
+| **Claude Code Marketplace** | `.claude-plugin/` | `/plugin marketplace add NB-Corp/chat-human` -> `/plugin install chat-human@chat-human` |
+| **MCP Clients** (Cursor / Cherry / Cline) | `@nb-corp/nb-speak-mcp` | `npx -y github:NB-Corp/nb-speak mcp` |
+| **OpenClaw** (TG / WhatsApp / Discord) | `@nb-corp/nb-speak-openclaw` | `npx --yes github:NB-Corp/nb-speak openclaw --apply` |
+| **AstrBot** (QQ / WeChat / Feishu) | [`NB-Corp/astrbot_plugin_nb_speak`](https://github.com/NB-Corp/astrbot_plugin_nb_speak) | Paste repo URL in AstrBot WebUI Plugin Manager |
+| **LangBot v4+** (WeChat / QQ / DingTalk) | [`NB-Corp/langbot_plugin_nb_speak`](https://github.com/NB-Corp/langbot_plugin_nb_speak) | Paste repo URL in LangBot WebUI Plugin Space |
+| **Koishi v4 / NoneBot2** | `koishi-plugin-nb-speak` · `nonebot-plugin-nb-speak` | `npm i koishi-plugin-nb-speak` · `nb plugin install nonebot-plugin-nb-speak` |
+| **OpenWebUI / OpenAI Bridge** | `nb_speak_filter.py` · `@nb-corp/nb-speak` | Import `nb_speak_filter.py` or run `npx --yes github:NB-Corp/nb-speak serve --port 18090` |
 
 ---
 

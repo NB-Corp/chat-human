@@ -28,27 +28,19 @@ npx skills add NB-Corp/chat-human --global --agent claude-code
 npx skills add NB-Corp/chat-human --global --agent codex
 ```
 
-### 2. 挂载 Personal Agent 原生防破功插件（OpenClaw & AstrBot）
+### 2. 挂载全生态原生防破功插件与 MCP 服务 (`NB-Corp/nb-speak`)
 
-单纯靠提示词在长会话压缩后仍可能退化。配合主仓 **[`NB-Corp/nb-speak`](https://github.com/NB-Corp/nb-speak)** 内置的原生插件，可在发送前执行确定性清洗与分泡编排：
+单纯靠提示词在长会话压缩后仍可能退化。配合主仓 **[`NB-Corp/nb-speak`](https://github.com/NB-Corp/nb-speak)** 内置的原生插件，可在发送前执行确定性拆表与分泡编排：
 
-```bash
-# A. OpenClaw 原生插件（零克隆一行安装至 ~/.openclaw，自动拦截裸管道表格、隔离代码块并分泡发送）
-npx --yes github:NB-Corp/nb-speak openclaw --apply
-
-# B. AstrBot 原生插件（在面板直接粘贴 https://github.com/NB-Corp/astrbot_plugin_nb_speak 安装，或命令行一行拉取：）
-git clone --depth 1 https://github.com/NB-Corp/astrbot_plugin_nb_speak <AstrBot>/data/plugins/astrbot_plugin_nb_speak
-```
-
-### 3. OpenAI / SSE 通用桥接网关与其他支持的客户端
-
-```bash
-# 在任意 OpenAI / DeepSeek / 本地 llama-server 前启动零依赖桥接网关 (http://127.0.0.1:18090)
-NB_SPEAK_API_KEY="sk-..." npx --yes github:NB-Corp/nb-speak serve --port 18090 --upstream-url https://api.deepseek.com/v1
-
-# 其他支持的客户端：一键挂载至 DeepSeek Harness (DSH) WebUI
-npx --yes github:NB-Corp/nb-speak-dsh --apply --profile web
-```
+| 生态 / 客户端 | 包名或独立仓 | 一行接入方式 |
+| --- | --- | --- |
+| **Claude Code 插件市场** | `.claude-plugin/` | `/plugin marketplace add NB-Corp/chat-human` -> `/plugin install chat-human@chat-human` |
+| **MCP 客户端**（Cherry / Cursor / Cline） | `@nb-corp/nb-speak-mcp` | `npx -y github:NB-Corp/nb-speak mcp` |
+| **OpenClaw**（TG / WhatsApp / Discord） | `@nb-corp/nb-speak-openclaw` | `npx --yes github:NB-Corp/nb-speak openclaw --apply` |
+| **AstrBot**（QQ / 微信 / 飞书） | [`NB-Corp/astrbot_plugin_nb_speak`](https://github.com/NB-Corp/astrbot_plugin_nb_speak) | 面板直接粘贴仓库 URL 一键安装 |
+| **LangBot v4+**（微信 / QQ / 钉钉） | [`NB-Corp/langbot_plugin_nb_speak`](https://github.com/NB-Corp/langbot_plugin_nb_speak) | 面板直接粘贴仓库 URL 一键安装 |
+| **Koishi v4 / NoneBot2** | `koishi-plugin-nb-speak` · `nonebot-plugin-nb-speak` | `npm i koishi-plugin-nb-speak` · `nb plugin install nonebot-plugin-nb-speak` |
+| **OpenWebUI / OpenAI 桥接** | `nb_speak_filter.py` · `@nb-corp/nb-speak` | 导入 `nb_speak_filter.py` 或运行 `npx --yes github:NB-Corp/nb-speak serve --port 18090` |
 
 ---
 

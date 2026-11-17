@@ -4,10 +4,10 @@
 
 ## Quickstart Across Personal Agents & Runtimes
 
-- `npx skills add NB-Corp/chat-human --global --agent '*'` — Install the standalone `chat-human` Agent Skill into Claude Code, OpenAI Codex, Cursor, OpenClaw, Kiki, Gemini CLI, and 70+ Agent Skills (`skills.sh`) runtimes.
-- `npx --yes github:NB-Corp/nb-speak openclaw --apply` — Zero-clone installation of `@nb-corp/nb-speak-openclaw`, the native OpenClaw plugin & deterministic outbound gate fixing Telegram/WhatsApp raw pipe tables (`openclaw#36323`) and 250-word essay regressions.
-- `git clone --depth 1 https://github.com/NB-Corp/astrbot_plugin_nb_speak <AstrBot>/data/plugins/astrbot_plugin_nb_speak` (or paste `https://github.com/NB-Corp/astrbot_plugin_nb_speak` in AstrBot WebUI Plugin Manager) — Install `astrbot_plugin_nb_speak` to fix AstrBot's 150-char `segmented_reply` cliff (`AstrBot#8614`), protect fenced code blocks from regex slicing, and convert pipe tables into QQ/WeChat mobile KV cards.
-- `npx --yes github:NB-Corp/nb-speak serve --port 18090` — Start the zero-dependency OpenAI/SSE HTTP proxy bridge (`@nb-corp/nb-speak`), or mount `@nb-corp/nb-speak-dsh` for DeepSeek Harness (`DSH`).
+- `npx skills add NB-Corp/chat-human --global --agent '*'` (or Claude Code `/plugin marketplace add NB-Corp/chat-human`) — Install the standalone `chat-human` Agent Skill into Claude Code, OpenAI Codex, Cursor, OpenClaw, Kiki, Gemini CLI, and 70+ Agent Skills (`skills.sh`) runtimes.
+- `npx -y github:NB-Corp/nb-speak mcp` — Mount `@nb-corp/nb-speak-mcp` (`io.github.NB-Corp/nb-speak`) in Cursor, Windsurf, Cherry Studio, Cline, Roo Code, Goose, Zed, and Raycast.
+- `npx --yes github:NB-Corp/nb-speak openclaw --apply` — Zero-clone installation of `@nb-corp/nb-speak-openclaw`, fixing Telegram/WhatsApp raw pipe tables (`openclaw#36323`) and 250-word essay regressions.
+- `https://github.com/NB-Corp/astrbot_plugin_nb_speak` & `https://github.com/NB-Corp/langbot_plugin_nb_speak` — Native AstrBot v4+ & LangBot v4+ plugins for QQ/WeChat/Feishu/DingTalk, alongside `koishi-plugin-nb-speak`, `nonebot-plugin-nb-speak`, OpenWebUI `nb_speak_filter.py`, and `nb-speak serve`.
 
 ## Canonical Documentation & Bundled Tools
 

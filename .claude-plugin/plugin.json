@@ -1,0 +1,23 @@
+{
+  "name": "chat-human",
+  "description": "Universal mobile IM bubble physics and deterministic bubble_lint gate for Personal Agents.",
+  "version": "0.2.0",
+  "author": {
+    "name": "NB-Corp",
+    "url": "https://github.com/NB-Corp"
+  },
+  "homepage": "https://github.com/NB-Corp/chat-human",
+  "repository": "https://github.com/NB-Corp/chat-human",
+  "license": "MIT",
+  "keywords": [
+    "im",
+    "chat-human",
+    "agent-skills",
+    "telegram",
+    "whatsapp",
+    "markdown-tables"
+  ],
+  "skills": [
+    "./skills/chat-human"
+  ]
+}

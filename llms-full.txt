@@ -28,11 +28,13 @@ Generic prose "humanizer" skills (`humanizer`, `Humanizer-zh`) rewrite essays an
 
 | Runtime / Personal Agent Surface | Package / Path | One-Line Command |
 | --- | --- | --- |
-| **Claude Code, Codex, Cursor, Kiki (`skills.sh`)** | [`NB-Corp/chat-human`](https://github.com/NB-Corp/chat-human) | `npx skills add NB-Corp/chat-human --global --agent '*'` |
+| **Claude Code, Codex, Cursor, Kiki (`skills.sh`)** | [`NB-Corp/chat-human`](https://github.com/NB-Corp/chat-human) · `.claude-plugin/` | `npx skills add NB-Corp/chat-human --global --agent '*'` |
+| **MCP Clients (Cursor / Cherry / Cline / Zed)** | `@nb-corp/nb-speak-mcp` (`io.github.NB-Corp/nb-speak`) | `npx -y github:NB-Corp/nb-speak mcp` |
 | **OpenClaw (Telegram / WhatsApp / Discord / Signal)** | `@nb-corp/nb-speak-openclaw` ([`NB-Corp/nb-speak`](https://github.com/NB-Corp/nb-speak)) | `npx --yes github:NB-Corp/nb-speak openclaw --apply` |
 | **AstrBot (QQ / WeChat / Telegram / Feishu)** | [`NB-Corp/astrbot_plugin_nb_speak`](https://github.com/NB-Corp/astrbot_plugin_nb_speak) | `git clone --depth 1 https://github.com/NB-Corp/astrbot_plugin_nb_speak <AstrBot>/data/plugins/astrbot_plugin_nb_speak` |
-| **OpenAI / SSE Bridge & TypeScript SDK** | `@nb-corp/nb-speak` ([`NB-Corp/nb-speak`](https://github.com/NB-Corp/nb-speak)) | `npx --yes github:NB-Corp/nb-speak serve --port 18090` |
-| **DeepSeek Harness (`DSH`) WebUI Client** | [`NB-Corp/nb-speak-dsh`](https://github.com/NB-Corp/nb-speak-dsh) | `npx --yes github:NB-Corp/nb-speak-dsh --apply --profile web` |
+| **LangBot v4+ (WeChat / QQ / Feishu / DingTalk)** | [`NB-Corp/langbot_plugin_nb_speak`](https://github.com/NB-Corp/langbot_plugin_nb_speak) | `git clone --depth 1 https://github.com/NB-Corp/langbot_plugin_nb_speak` |
+| **Koishi v4 / NoneBot2 / OpenWebUI** | `koishi-plugin-nb-speak` · `nonebot-plugin-nb-speak` · `nb_speak_filter.py` | `npm i koishi-plugin-nb-speak` · `nb plugin install nonebot-plugin-nb-speak` |
+| **OpenAI / SSE Bridge & DSH** | `@nb-corp/nb-speak` · [`NB-Corp/nb-speak-dsh`](https://github.com/NB-Corp/nb-speak-dsh) | `npx --yes github:NB-Corp/nb-speak serve --port 18090` |
 
 ---
 
