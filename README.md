@@ -1,6 +1,6 @@
 # chat-human
 
-**Thumb-typed IM bubble mechanics, plain-reply beat pacing, complementary voice notes, and pluggable persona adaptation for AI agents.**
+**Thumb-typed IM bubble mechanics, plain-reply beat pacing, artifact offload, pluggable persona adaptation, and opt-in complementary voice notes for AI agents.**
 
 **English** · [简体中文](README.zh-CN.md) · [Skill (`skills/chat-human/SKILL.md`)](skills/chat-human/SKILL.md) · [DSH Bubble Plugin (`NB-Corp/nb-speak-dsh`)](https://github.com/NB-Corp/nb-speak-dsh) · [Protocol & Bridge (`NB-Corp/nb-speak`)](https://github.com/NB-Corp/nb-speak) · [Live Playground](https://nb-corp.github.io/nb-speak/) · [llms.txt](llms.txt)
 
@@ -37,7 +37,7 @@ Prose "humanizer" prompts are built for essays and articles. When you connect an
 
 ## Works With or Without a Bubble Tool
 
-- **Multi-bubble tool harnesses (`SendMessage` / `messages[]`)**: Delivers every turn—including short casual acknowledgments—through `messages[]` (`end_turn: true` on the final send), attaches optional `tts` strictly on the final bubble, and falls back to clean text without leaking backend/plugin errors if TTS is unavailable.
+- **Multi-bubble tool harnesses (`SendMessage` / `messages[]`)**: Delivers every turn—including short casual acknowledgments—through `messages[]` (`end_turn: true` on the final send). Pure text bubbles + artifact offload are the default; optional `tts` is strictly opt-in (attached only on the final bubble when voice output is enabled) and falls back cleanly without leaking backend/plugin errors if TTS is unavailable.
 - **Plain-reply chat harnesses (CLI, web chat, single-reply webhooks)**: Applies the same mobile brevity, subject ellipsis, and zero-period physics directly in ordinary replies using `\n\n`-separated micro-beats (keeping coupled copy-paste lines like locker + pickup code on a single `\n`), never leaking raw `{"messages": ...}` JSON or `Bubble 1:` labels.
 
 ## Pluggable Persona: One Mechanics Layer, Any Voice
@@ -61,7 +61,7 @@ npx skills add NB-Corp/chat-human
 npx skills add NB-Corp/nb-speak
 ```
 
-Running **DeepSeek Harness (`DSH`)**? Mount the standalone zero-clone native bubble & ElevenLabs `eleven_v4` voice-note plugin ([`NB-Corp/nb-speak-dsh`](https://github.com/NB-Corp/nb-speak-dsh) · [Live DSH Showcase](https://nb-corp.github.io/nb-speak-dsh/)):
+Running **DeepSeek Harness (`DSH`)**? Mount the standalone zero-clone native bubble, artifact card & optional voice-note plugin ([`NB-Corp/nb-speak-dsh`](https://github.com/NB-Corp/nb-speak-dsh) · [Live DSH Showcase](https://nb-corp.github.io/nb-speak-dsh/)):
 
 ```bash
 npx --yes github:NB-Corp/nb-speak-dsh --apply --profile web

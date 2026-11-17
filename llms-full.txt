@@ -13,7 +13,7 @@ Generic prose "humanizer" prompts target essays and articles—not real-time IM 
    - `1–4` short beats (`4–28` CJK chars or `4–22` English words per bubble; cumulative turn budget `<= 55` CJK chars or `<= 45` English words).
    - Omit formal trailing periods (`.` / `。`) on single-clause short beats and after copyable codes/IDs.
    - Zero `#` headings, Markdown pipe tables, code fences, bullet checklists, RPG stage brackets (`*sighs*`, `（叹气）`), or concierge triads inside bubbles—offload code/SQL/tables to artifact cards or separate file attachments.
-   - At most `1` voice note per turn, attached strictly to the final bubble, complementing (`<50%` character-bigram overlap) rather than repeating text bubbles, with numbers and clock times written as spoken words.
+   - Pure text bubbles + artifact offload are the default; voice notes (`tts` / `voice_note`) are strictly opt-in (attached only when voice output is enabled in host/plugin config or requested by the user—at most `1` per turn on the final bubble, `<50%` character-bigram overlap, spoken-word numbers).
 2. **Layer 2 · Pluggable Persona & Mood Adapter**:
    - Priority order: **(1)** Explicit current-turn user instruction > **(2)** Active `SOUL.md` / `PERSONA.md` / system prompt > **(3)** Channel context (1-on-1 DM vs group channel) > **(4)** **Neutral Peer Baseline** (equal-footing colleague, zero uninvited roleplay, zero Unicode emoji spam).
 

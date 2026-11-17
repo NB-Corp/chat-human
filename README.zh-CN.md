@@ -1,6 +1,6 @@
 # chat-human
 
-**面向 AI Agent 的手机短气泡对话机制、纯文本微节拍排版、互补语音条与可插拔 Persona 语气适配技能。**
+**面向 AI Agent 的手机短气泡对话机制、纯文本微节拍排版、代码卡片剥离、可插拔 Persona 语气适配与可选语音条技能。**
 
 [English](README.md) · **简体中文** · [技能正文 (`skills/chat-human/SKILL.md`)](skills/chat-human/SKILL.md) · [DSH 原生气泡插件 (`NB-Corp/nb-speak-dsh`)](https://github.com/NB-Corp/nb-speak-dsh) · [双工具协议与桥接 (`NB-Corp/nb-speak`)](https://github.com/NB-Corp/nb-speak) · [在线同屏工作台](https://nb-corp.github.io/nb-speak/zh/) · [llms.txt](llms.txt)
 
@@ -37,7 +37,7 @@
 
 ## 双通道原生适配：有气泡工具与普通纯文本回复皆宜
 
-- **多气泡工具宿主（`SendMessage` / `messages[]`）**：每一轮（含两三字的随口应答）均通过工具发送并置 `end_turn: true`，避免漏调工具或重复刷出纯文本尾巴；可选 `tts` 严格只挂末条气泡；若宿主未配置语音合成服务则静默降级为纯文字泡，绝不把「语音插件未配置」之类系统报错捅进聊天框。
+- **多气泡工具宿主（`SendMessage` / `messages[]`）**：每一轮（含两三字的随口应答）均通过工具发送并置 `end_turn: true`，避免漏调工具或重复刷出纯文本尾巴；**默认仅发送纯文字气泡与代码/表格卡片**，仅在宿主显式开启语音或用户主动要求时才在末条气泡附带 `tts`，且语音不可用时静默降级为纯文字泡，绝不把系统报错捅进聊天框。
 - **普通回复宿主（CLI、Web 对话框、单次回复 Webhook）**：在没有气泡工具时直接按相同手机字数预算、省主语与去句号规律输出，用空行（`\n\n`）切分 1–3 个短节拍，紧耦合复制单元（如快递柜号 + 取件码）用单换行 `\n` 保持一体，绝不裸吐 `{"messages": ...}` JSON 或 `气泡1：` 标签。
 
 ## 通用化设计：同一套气泡物理，适配任意 Persona
@@ -61,7 +61,7 @@ npx skills add NB-Corp/chat-human
 npx skills add NB-Corp/nb-speak
 ```
 
-正在使用 **DeepSeek Harness (`DSH`)**？可直接一行命令零克隆挂载独立原生真气泡与贴麦语音插件（[`NB-Corp/nb-speak-dsh`](https://github.com/NB-Corp/nb-speak-dsh) · [DSH 在线展台](https://nb-corp.github.io/nb-speak-dsh/zh/)）：
+正在使用 **DeepSeek Harness (`DSH`)**？可直接一行命令零克隆挂载独立原生真气泡、代码卡片与可选语音插件（[`NB-Corp/nb-speak-dsh`](https://github.com/NB-Corp/nb-speak-dsh) · [DSH 在线展台](https://nb-corp.github.io/nb-speak-dsh/zh/)）：
 
 ```bash
 npx --yes github:NB-Corp/nb-speak-dsh --apply --profile web
